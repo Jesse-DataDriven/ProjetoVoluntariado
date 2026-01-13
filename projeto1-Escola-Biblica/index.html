@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escola Bíblica - Portal Oficial</title>
+    <style>
+        :root { --p: #1a365d; --s: #2b6cb0; --a: #ed8936; --bg: #f7fafc; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #2d3748; }
+        
+        header { background: var(--p); color: white; padding: 25px; text-align: center; border-bottom: 5px solid var(--a); }
+        .brasao { width: 80px; height: auto; margin-bottom: 10px; }
+        header h1 { margin: 5px 0; font-size: 1.8rem; letter-spacing: 1px; }
+        .logo-sub { font-size: 0.8rem; opacity: 0.8; letter-spacing: 2px; text-transform: uppercase; }
+
+        nav { display: flex; justify-content: center; background: white; position: sticky; top: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 100; }
+        .nav-btn { border: none; background: none; padding: 15px 10px; font-weight: bold; color: #4a5568; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; font-size: 0.8rem; }
+        .nav-btn.active { color: var(--s); border-bottom: 3px solid var(--s); }
+        
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; min-height: 70vh; }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .card-container { position: relative; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .lesson-img { width: 100%; height: 280px; object-fit: cover; }
+        .lesson-content { padding: 25px; }
+        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .status-done { background: #c6f6d5; color: #22543d; }
+        .status-soon { background: #bee3f8; color: #2a4365; }
+        
+        .lesson-title { font-size: 1.5rem; color: var(--p); margin: 5px 0 15px 0; line-height: 1.2; }
+        .info-box { background: #f8fafc; padding: 15px; border-radius: 10px; border-left: 4px solid var(--s); margin-bottom: 15px; }
+        .prayer-box { background: #ebf8ff; padding: 12px; border-radius: 10px; border-left: 4px solid #4299e1; margin-bottom: 20px; font-style: italic; color: #2c5282; }
+
+        .podcast-call { background: #fffaf0; border: 1px dashed var(--a); padding: 15px; border-radius: 10px; margin-top: 15px; }
+        .btn-podcast { display: inline-block; background: #e53e3e; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.3s; width: 100%; box-sizing: border-box; text-align: center;}
+
+        .quiz-selector { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; justify-content: center; }
+        .quiz-bullet { padding: 10px 18px; background: white; border: 1px solid #cbd5e0; border-radius: 25px; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
+        .quiz-bullet.active { background: var(--a); color: white; border-color: var(--a); }
+
+        .ranking-art { background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%); color: white; padding: 60px 30px; border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        
+        .nav-arrow { position: absolute; top: 140px; transform: translateY(-50%); background: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 18px; z-index: 10; }
+        #prevBtn { left: 10px; }
+        #nextBtn { right: 10px; }
+
+        .gamified-footer { background: var(--p); color: white; padding: 30px 20px; text-align: center; border-top: 5px solid var(--a); margin-top: 40px; }
+        iframe { width: 100%; min-height: 850px; border: none; border-radius: 15px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://i.postimg.cc/L6WHM8tF/Brasao-(1).png" alt="Brasão" class="brasao">
+    <h1>ESCOLA BÍBLICA</h1>
+    <div class="logo-sub">CRESCIMENTO & ENGAJAMENTO</div>
+</header>
+
+<nav>
+    <button id="btn-calendario" class="nav-btn active" onclick="tab('calendario')">📅 CALENDÁRIO</button>
+    <button id="btn-quiz" class="nav-btn" onclick="tab('quiz')">📖 DESAFIO DE APRENDIZAGEM</button>
+    <button id="btn-ranking" class="nav-btn" onclick="tab('ranking')">🏆 CLASSIFICAÇÃO ACERTOS</button>
+</nav>
+
+<div class="container">
+    <div id="calendario" class="section active">
+        <div class="card-container">
+            <button id="prevBtn" class="nav-arrow" onclick="move(-1)">❮</button>
+            <div id="card-content"></div>
+            <button id="nextBtn" class="nav-arrow" onclick="move(1)">❯</button>
+        </div>
+    </div>
+    
+    <div id="quiz" class="section">
+        <h3 style="text-align:center; color: var(--p);">Selecione a lição:</h3>
+        <div id="quiz-bullets" class="quiz-selector"></div>
+        <div id="quiz-container"></div>
+    </div>
+
+    <div id="ranking" class="section">
+        <div class="ranking-art">
+            <span style="font-size:4rem; display:block; margin-bottom:20px;">🏆</span>
+            <h2>Em breve!</h2>
+            <p>Participem dos questionários e em breve divulgaremos aqui os resultados.</p>
+            <p style="margin-top: 20px; font-weight: bold; color: var(--a);">Deus abençoe!</p>
+        </div>
+    </div>
+</div>
+
+<footer class="gamified-footer">
+    <p><strong>"Lâmpada para os meus pés é a tua palavra, e luz para o meu caminho." – Salmo 119:105 📖✨</strong></p>
+    <p style="font-size: 0.85rem; opacity: 0.8; max-width: 600px; margin: 10px auto;">Use a tecnologia em favor do reino, seu WhatsApp é para a glória de Deus e sua Rede Social é para a glória de Deus. Leia a Bíblia diariamente.</p>
+</footer>
+
+<script>
+    const lessons = [
+        { id: 1, t: "LIÇÃO 1 – Os discípulos de Cristo são novas criaturas", d: "02/01/2026", prof: "Pr. Vinicius Victor", img: "https://i.postimg.cc/bvVwgLsK/1.jpg", status: "Aula Ministrada", desc: "Estudo sobre Arrependimento e nova vida em Cristo.", prayer: "Que as vidas sejam transformadas pelo poder do Evangelho.", pod: "https://drive.google.com/file/d/1dmCjo256Gl6nkXjvHlKKid5kOVQJhH2-/view?usp=sharing", form: "https://docs.google.com/forms/d/e/1FAIpQLSdtB4SutFbrC2nwEwLdeMaDKS1aqrA7rRk3Fe6NQFVXlemHCg/viewform?embedded=true" },
+        { id: 2, t: "LIÇÃO 2 – Princípios bíblicos para a vida dos discípulos", d: "09/01/2026", prof: "Pr. Armindo", img: "https://i.postimg.cc/yNp8jnk2/2.jpg", status: "Aula Ministrada", desc: "Compreensão dos padrões Bíblicos da vida e o caminho de paz.", prayer: "Que sejamos fiéis aos princípios de Jesus.", pod: "https://drive.google.com/file/d/13HKX9GD7qGCI5-JqVfGjT4zM92qHl9Is/view?usp=sharing", form: "https://docs.google.com/forms/d/e/1FAIpQLSfsUngExK7qcUjM-bSjPzsAVbZ1S2LOOeVg4d7vBXQPJHTn6w/viewform?embedded=true" },
+        { id: 3, t: "LIÇÃO 3 – Os compromissos dos discípulos de Cristo", d: "16/01/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/CKrx7Jzt/3.jpg", status: "Em breve", desc: "Estudo sobre a relevância do Chamado e compromisso.", prayer: "Precisamos manter firme o compromisso individual com Jesus.", pod: "https://drive.google.com/file/d/17Zwjv45xscxDQdL-2Q4LXmRhwFKUz2Yr/view?usp=sharing", form: null },
+        { id: 4, t: "LIÇÃO 4 – Os discípulos de Cristo e a tentação", d: "23/01/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/9fgQb1rk/4.jpg", status: "Em breve", desc: "Como Jesus venceu as tentações.", prayer: "Nos revestirmos do poder de Deus para vencer tentações.", pod: "https://drive.google.com/file/d/1yazMQ8y0T6MxC0rnH3WtpMHabQP3-mVE/view?usp=drive_link", form: null },
+        { id: 5, t: "LIÇÃO 5 – A importância do jejum", d: "30/01/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/MG3p5tvr/5.jpg", status: "Em breve", desc: "Estudo sobre o valor espiritual de jejuar.", prayer: "Para a igreja jejuar mais em consagração a Deus.", pod: "#", form: null },
+        { id: 6, t: "LIÇÃO 6 – Oração: disciplina indispensável", d: "06/02/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/d0V0GgVK/6.jpg", status: "Em breve", desc: "Estudo sobre a onisciência de Deus e avivamento pela oração.", prayer: "Para nós, testemunhas de Cristo, orem sem cessar.", pod: "#", form: null },
+        { id: 7, t: "LIÇÃO 7 – Vencendo as estratégias do inimigo", d: "13/02/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/s2HgmKvH/7.jpg", status: "Em breve", desc: "Identificação das artimanhas do inimigo e vitória em Cristo.", prayer: "Consagração da Igreja vencendo as ofertas do inimigo.", pod: "#", form: null },
+        { id: 8, t: "LIÇÃO 8 – Os discípulos e o bom ânimo", d: "20/02/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/R0Z0w2Zx/8.jpg", status: "Em breve", desc: "Como lidar com adversidades com bom ânimo.", prayer: "Para que na adversidade, as bençãos do senhor esteja sobre nós.", pod: "#", form: null },
+        { id: 9, t: "LIÇÃO 9 – O processo da santificação", d: "27/02/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/1z3zDb3h/9.jpg", status: "Em breve", desc: "A importância da busca constante de santificação.", prayer: "Orar para que a igreja do senhor ande em Santidade.", pod: "#", form: null },
+        { id: 10, t: "LIÇÃO 10 – A missão dos discípulos", d: "06/03/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/k5Ygsw2r/10.jpg", status: "Em breve", desc: "Estudo sobre a missão do Evangelho e o 'Ide'.", prayer: "Oremos para podermos realizar o “indo por todo mundo” como Jesus determinou.", pod: "#", form: null },
+        { id: 11, t: "LIÇÃO 11 – O caráter dos discípulos", d: "13/03/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/1z3zDb5k/11.jpg", status: "Em breve", desc: "Como Cristo transforma o caráter do crente.", prayer: "Oremos para que nós Cristãos busquemos ter o caráter de Jesus Cristo.", pod: "#", form: null },
+        { id: 12, t: "LIÇÃO 12 – Os discípulos e o Espírito Santo", d: "20/03/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/CKxKb9L9/12.jpg", status: "Em breve", desc: "Revestimento de poder e o viver cheio de Deus.", prayer: "Oremos para que o Espírito Santo batize na sua igreja.", pod: "#", form: null },
+        { id: 13, t: "LIÇÃO 13 – A bem-aventurada esperança", d: "27/03/2026", prof: "Sendo escalado", img: "https://i.postimg.cc/FKHK0ws2/13.jpg", status: "Em breve", desc: "A esperança da Glória e a vinda do Senhor.", prayer: "Ore para que a esperança da vinda do Senhor, acompanhe a igreja do senhor!", pod: "#", form: null }
+    ];
+
+    let currentIdx = 0;
+    let quizIdx = 0;
+
+    function render() {
+        const l = lessons[currentIdx];
+        const statusClass = l.status === "Aula Ministrada" ? "status-done" : "status-soon";
+        const podCall = l.status === "Aula Ministrada" ? "Reveja o que aprendemos!" : "Se prepare para essa aprendizagem!";
+
+        document.getElementById('card-content').innerHTML = `
+            <img src="${l.img}" class="lesson-img">
+            <div class="lesson-content">
+                <span class="status-badge ${statusClass}">${l.status}</span>
+                <div style="font-size:0.9rem; color:var(--a); font-weight:bold; margin-bottom:5px;">📅 ${l.d} | Prof: ${l.prof}</div>
+                <h2 class="lesson-title">${l.t}</h2>
+                <div class="info-box"><strong>📖 Descrição:</strong><br><span style="font-size:0.95rem; color:#4a5568;">${l.desc}</span></div>
+                <div class="prayer-box"><strong>🙏 Propósito de Oração desta lição:</strong><br><span style="font-size:0.95rem;">${l.prayer}</span></div>
+                <div class="podcast-call">
+                    <p style="margin:0; color:#744210; font-weight:bold;">• ${podCall}</p>
+                    <a href="${l.pod}" target="_blank" class="btn-podcast">🎧 ESCUTAR PODCAST</a>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('quiz-bullets').innerHTML = lessons.map((item, i) => `
+            <div class="quiz-bullet ${i === quizIdx ? 'active' : ''}" onclick="setQuiz(${i})">Lição ${item.id}</div>
+        `).join('');
+
+        const q = lessons[quizIdx];
+        const qContainer = document.getElementById('quiz-container');
+        if (q.form) {
+            qContainer.innerHTML = `<iframe src="${q.form}">Carregando…</iframe>`;
+        } else {
+            qContainer.innerHTML = `<div style="text-align:center; padding:40px; border:2px dashed #ccc; border-radius:15px; background:white;"><h3>📖 Lição ${q.id}</h3><p>Questionário liberado em breve!</p></div>`;
+        }
+    }
+
+    function setQuiz(i) { quizIdx = i; render(); }
+    function move(s) { currentIdx = (currentIdx + s + lessons.length) % lessons.length; render(); }
+    function tab(id) { 
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('btn-' + id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+    render();
+</script>
+</body>
+</html>
