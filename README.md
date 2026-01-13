@@ -1,3 +1,12 @@
+![Transformação Digital](https://img.shields.io/badge/Transformação-Digital-0d6efd)
+![Projeto Voluntário](https://img.shields.io/badge/Projeto-Voluntário-198754)
+![IA Aplicada](https://img.shields.io/badge/IA-Aplicada-6f42c1)
+![Design Minimalista](https://img.shields.io/badge/Design-Minimalista-f39c12)
+![Netlify](https://img.shields.io/badge/Deploy-Netlify-00c7b7)
+![Podcast IA](https://img.shields.io/badge/Podcast-IA-8c2be3)
+![HTML/CSS/JS](https://img.shields.io/badge/Stack-HTML%20%7C%20CSS%20%7C%20JS-e34c26)
+
+
 # 🌍 Projeto Voluntário de Transformação Digital  
 ### Inclusão digital para microempreendedores e iniciativas comunitárias
 
