@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conexão Jovem - Paraíso 2</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --bg-light: #f8fafc;
+        --text-light: #1e293b;
+        --bg-dark: #0f172a;
+        --text-dark: #f1f5f9;
+        --card-bg-light: #ffffff;
+        --card-bg-dark: #1e293b;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        transition: all 0.3s ease;
+        background-color: var(--bg-light);
+        color: var(--text-light);
+        /* Background com ícones (simulado com overlay) */
+        background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+      }
+
+      body.dark-mode {
+        background-color: var(--bg-dark);
+        color: var(--text-dark);
+      }
+
+      /* Header e Logo */
+      header {
+        text-align: center;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+        color: white;
+        position: relative;
+      }
+
+      .header-banner {
+        font-size: 3rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+      }
+
+      .group-logo {
+        max-width: 250px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Navegação */
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        background: #1e293b;
+        padding: 15px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      nav button {
+        background: transparent;
+        border: 1px solid #3b82f6;
+        color: white;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: 0.3s;
+      }
+
+      nav button:hover,
+      nav button.active {
+        background: #3b82f6;
+      }
+
+      .theme-toggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: none;
+        font-size: 1.2rem;
+      }
+
+      /* Seções */
+      .container {
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 20px;
+      }
+
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Aba 1: Bíblia */
+      .bible-frame {
+        width: 100%;
+        height: 800px;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Aba 2 e 3: Repertórios */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+      }
+
+      .card {
+        background: var(--card-bg-light);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .dark-mode .card {
+        background: var(--card-bg-dark);
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .card-body {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .btn-letra {
+        display: inline-block;
+        background: #2563eb;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-bottom: 15px;
+      }
+
+      .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Aba 4: Quiz */
+      .quiz-container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: var(--card-bg-light);
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+      }
+
+      .dark-mode .quiz-container {
+        background: var(--card-bg-dark);
+      }
+
+      .options-grid {
+        display: grid;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .option-btn {
+        padding: 15px;
+        border: 1px solid #3b82f6;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: 0.2s;
+        text-align: left;
+      }
+
+      .option-btn:hover {
+        background: rgba(59, 130, 246, 0.1);
+      }
+
+      /* Modais de acerto/erro */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+      }
+
+      .modal-content {
+        padding: 50px;
+        border-radius: 20px;
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-align: center;
+        color: white;
+      }
+
+      .modal.correct .modal-content {
+        background: #10b981;
+      }
+      .modal.incorrect .modal-content {
+        background: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+      </button>
+      <div class="header-banner">Grupo Conexão Jovem – Paraíso 2</div>
+      <img
+        src="https://i.postimg.cc/2jsyDmX7/Conexao-Jovem.gif"
+        alt="Logo Conexão Jovem"
+        class="group-logo"
+      />
+    </header>
+
+    <nav>
+      <button onclick="showTab('biblia')" class="nav-btn active">
+        Bíblia Online
+      </button>
+      <button onclick="showTab('coral')" class="nav-btn">Coral</button>
+      <button onclick="showTab('louvor')" class="nav-btn">
+        Equipe de Louvor
+      </button>
+      <button onclick="showTab('quiz')" class="nav-btn">Quiz Bíblico</button>
+    </nav>
+
+    <div class="container">
+      <section id="biblia" class="tab-content active">
+        <iframe
+          src="https://www.bible.com/pt/versions"
+          class="bible-frame"
+        ></iframe>
+      </section>
+
+      <section id="coral" class="tab-content">
+        <div class="cards-grid">
+          <div class="card">
+            <img
+              src="https://i.postimg.cc/Fzy1dLkL/04_Sarah_Oliveira_Vitorioso_E_s.jpg"
+              alt="Sarah Oliveira"
+            />
+            <div class="card-body">
+              <h3>Sarah Oliveira - Vitorioso És</h3>
+              <a
+                href="https://docs.google.com/document/d/1jKaIPC5fGpXwvTr_gceqfbblddvzJdQ_/edit"
+                target="_blank"
+                class="btn-letra"
+                >Abra a letra do hino</a
+              >
+              <div class="video-container">
+                <iframe
+                  src="https://www.youtube.com/embed/dDVEFltaKxo"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="louvor" class="tab-content">
+        <div class="cards-grid">
+          <div class="card">
+            <img
+              src="https://i.postimg.cc/qqsgh365/01_Tudo_é_perda_Felipe_Rodrigues.jpg"
+              alt="Felipe Rodrigues"
+            />
+            <div class="card-body">
+              <h3>Tudo é perda - Felipe Rodrigues</h3>
+              <a
+                href="https://docs.google.com/document/d/1z9nVIXMJ9i10CNolpE-0EteZDuCC3DNb/edit"
+                target="_blank"
+                class="btn-letra"
+                >Abra a letra do hino</a
+              >
+              <div class="video-container">
+                <iframe
+                  src="https://www.youtube.com/embed/qxzQR5uwWsk"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="https://i.postimg.cc/cCyrLmCM/02_Precido_de_Ti_Diante_do_Trono.jpg"
+              alt="Diante do Trono"
+            />
+            <div class="card-body">
+              <h3>Preciso de Ti - Diante do Trono</h3>
+              <a
+                href="https://docs.google.com/document/d/1vxQx100ZgZlnKJX8Qm1Wv9BOXI_Jptz4/edit"
+                target="_blank"
+                class="btn-letra"
+                >Abra a letra do hino</a
+              >
+              <div class="video-container">
+                <iframe
+                  src="https://www.youtube.com/embed/Hy6QJ6LJW2I"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="https://i.postimg.cc/BbTtLKPT/03_Vim_para_Adorarte_Adoração_Adoradores.jpg"
+              alt="Adoração & Adoradores"
+            />
+            <div class="card-body">
+              <h3>Vim para Adorarte - Adoração & Adoradores</h3>
+              <a
+                href="https://docs.google.com/document/d/1Nv68OKzZ8yd8MQLxAD0XjJWvTBrQaHwC/edit"
+                target="_blank"
+                class="btn-letra"
+                >Abra a letra do hino</a
+              >
+              <div class="video-container">
+                <iframe
+                  src="https://www.youtube.com/embed/-4AAHPM98Do"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <img
+              src="https://i.postimg.cc/Fzy1dLkL/04_Sarah_Oliveira_Vitorioso_E_s.jpg"
+              alt="Sarah Oliveira"
+            />
+            <div class="card-body">
+              <h3>Sarah Oliveira - Vitorioso És</h3>
+              <a
+                href="https://docs.google.com/document/d/1jKaIPC5fGpXwvTr_gceqfbblddvzJdQ_/edit"
+                target="_blank"
+                class="btn-letra"
+                >Abra a letra do hino</a
+              >
+              <div class="video-container">
+                <iframe
+                  src="https://www.youtube.com/embed/dDVEFltaKxo"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz" class="tab-content">
+        <div class="quiz-container">
+          <h2 id="quiz-question">Pergunta</h2>
+          <div class="options-grid" id="quiz-options"></div>
+        </div>
+      </section>
+    </div>
+
+    <div id="modal-correct" class="modal correct">
+      <div class="modal-content">RESPOSTA CORRETA!</div>
+    </div>
+    <div id="modal-incorrect" class="modal incorrect">
+      <div class="modal-content">RESPOSTA INCORRETA! Voltando ao início...</div>
+    </div>
+
+    <script>
+      // Lógica de Troca de Abas
+      function showTab(tabId) {
+        document
+          .querySelectorAll('.tab-content')
+          .forEach((tab) => tab.classList.remove('active'));
+        document
+          .querySelectorAll('.nav-btn')
+          .forEach((btn) => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+      }
+
+      // Dark Mode
+      function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const icon = document.querySelector('.theme-toggle i');
+        if (document.body.classList.contains('dark-mode')) {
+          icon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+          icon.classList.replace('fa-sun', 'fa-moon');
+        }
+      }
+
+      // Lógica do Quiz
+      const questions = [
+        {
+          q: 'Qual foi a primeira cura individual registrada em Marcos?',
+          options: [
+            'Um cego',
+            'Um paralítico',
+            'A sogra de Pedro',
+            'Um leproso',
+          ],
+          correct: 2,
+        },
+        {
+          q: 'Qual é o primeiro versículo do livro de Marcos?',
+          options: [
+            'No princípio, criou Deus os céus e a terra.',
+            'No princípio era o Verbo, e o Verbo estava com Deus.',
+            'Princípio do evangelho de Jesus Cristo, Filho de Deus.',
+            'Eu sou o caminho, a verdade e a vida.',
+          ],
+          correct: 2,
+        },
+        {
+          q: 'Quem era o pai de Marcos, o autor do evangelho?',
+          options: ['João', 'Simão', 'Barnabé', 'José'],
+          correct: 2,
+        },
+        {
+          q: 'Onde o Evangelho de Marcos foi provavelmente escrito?',
+          options: ['Roma', 'Jerusalém', 'Antioquia', 'Éfeso'],
+          correct: 0,
+        },
+        {
+          q: 'Qual é o tema central do Evangelho de Marcos?',
+          options: [
+            'A genealogia de Jesus',
+            'Os milagres de Jesus',
+            'A paixão, morte e ressurreição de Jesus',
+            'O nascimento de Jesus',
+          ],
+          correct: 2,
+        },
+        {
+          q: 'Quem foi o primeiro discípulo chamado por Jesus, segundo o Evangelho de Marcos?',
+          options: ['João', 'Pedro', 'Tiago', 'André'],
+          correct: 3,
+        },
+        {
+          q: 'Como Marcos descreve Jesus em seu evangelho?',
+          options: [
+            'Como o Messias pacífico',
+            'Como o Filho de Deus que sofreu e serviu',
+            'Como o Rei dos judeus',
+            'Como um grande profeta',
+          ],
+          correct: 1,
+        },
+        {
+          q: 'Quantos capítulos tem o Evangelho de Marcos?',
+          options: ['16', '18', '20', '24'],
+          correct: 0,
+        },
+        {
+          q: 'Qual é a primeira coisa que Jesus faz em Marcos capítulo 1?',
+          options: [
+            'Cura um cego',
+            'Prepara seus discípulos',
+            'É batizado por João',
+            'Realiza um milagre de multiplicação de pães',
+          ],
+          correct: 2,
+        },
+        {
+          q: 'Em Marcos 1:35, o que Jesus faz de manhã cedo?',
+          options: [
+            'Ensina a multidão',
+            'Faz orações em um lugar solitário',
+            'Multiplica os pães',
+            'Chama os discípulos',
+          ],
+          correct: 1,
+        },
+        {
+          q: "Em Marcos, quem é descrito como 'o herói da fé' que prepara o caminho para Jesus?",
+          options: ['João Batista', 'Pedro', 'José', 'Tiago'],
+          correct: 0,
+        },
+        {
+          q: 'Qual é o primeiro milagre de Jesus registrado em Marcos?',
+          options: [
+            'Transformar água em vinho',
+            'Curar a sogra de Pedro',
+            'Curar um cego',
+            'Multiplicar os pães',
+          ],
+          correct: 1,
+        },
+        {
+          q: 'Em Marcos 4, qual parábola Jesus conta para ensinar sobre o reino de Deus?',
+          options: [
+            'Parábola do bom samaritano',
+            'Parábola do semeador',
+            'Parábola das dez virgens',
+            'Parábola do filho pródigo',
+          ],
+          correct: 1,
+        },
+        {
+          q: 'Quem criticou Jesus por comer com publicanos e pecadores em Marcos 2?',
+          options: ['Os fariseus', 'Os saduceus', 'Os escribas', 'Os zelotes'],
+          correct: 0,
+        },
+        {
+          q: 'O que Jesus faz no final do capítulo 5 de Marcos?',
+          options: [
+            'Cura o cego Bartimeu',
+            'Expulsa demônios de um homem gadareno',
+            'Ressuscita a filha de Jairo',
+            'Multiplica os pães',
+          ],
+          correct: 2,
+        },
+        {
+          q: 'O que aconteceu com a mulher que tocou a roupa de Jesus em Marcos 5:25-34?',
+          options: [
+            'Ela foi curada da sua hemorragia',
+            'Ela recebeu perdão pelos pecados',
+            'Ela foi curada de cegueira',
+            'Ela foi liberta de possessão demoníaca',
+          ],
+          correct: 0,
+        },
+        {
+          q: 'Quem negou Jesus três vezes antes do amanhecer, conforme descrito em Marcos 14?',
+          options: ['João', 'Tiago', 'Pedro', 'Judas'],
+          correct: 2,
+        },
+        {
+          q: 'Em Marcos, quem é o centurião romano que reconhece Jesus como Filho de Deus após sua morte?',
+          options: ['Pilatos', 'Herodes', 'Caifás', 'O centurião'],
+          correct: 3,
+        },
+        {
+          q: 'Quem foi a primeira pessoa a ver Jesus ressuscitado, de acordo com Marcos 16?',
+          options: ['Maria Madalena', 'Pedro', 'Maria, mãe de Tiago', 'Salomé'],
+          correct: 0,
+        },
+        {
+          q: 'Em Marcos 8, qual é a confissão de Pedro sobre quem é Jesus?',
+          options: [
+            "'Tu és o Cristo'",
+            "'Tu és o Filho de Deus'",
+            "'Tu és o profeta prometido'",
+            "'Tu és o rei de Israel'",
+          ],
+          correct: 0,
+        },
+        {
+          q: 'Qual é o nome do local onde Jesus foi transfigurado diante de seus discípulos, conforme Marcos 9?',
+          options: [
+            'Monte Sinai',
+            'Monte das Oliveiras',
+            'Monte Hermon',
+            'Monte Calvário',
+          ],
+          correct: 2,
+        },
+        {
+          q: 'O que Jesus ordenou aos seus discípulos durante a última ceia, conforme Marcos 14?',
+          options: [
+            "'Amai-vos uns aos outros'",
+            "'Ide e pregai o evangelho'",
+            "'Tomai, comei, isto é o meu corpo'",
+            "'Ficai atentos às minhas palavras'",
+          ],
+          correct: 2,
+        },
+        {
+          q: 'Em Marcos 10, qual é a resposta de Jesus quando lhe perguntam sobre o divórcio?',
+          options: [
+            "'O que Deus uniu, o homem não separe'",
+            "'O divórcio é permitido, mas com restrições'",
+            "'O divórcio é permitido somente em caso de adultério'",
+            "'Não falei sobre isso até agora'",
+          ],
+          correct: 0,
+        },
+        {
+          q: 'O que Jesus faz quando é confrontado pelos fariseus em Marcos 7 sobre a tradição dos anciãos?',
+          options: [
+            'Ele acusa os fariseus de serem hipócritas',
+            'Ele os chama para o arrependimento',
+            'Ele os desafia com parábolas',
+            'Ele começa a curar os doentes',
+          ],
+          correct: 0,
+        },
+        {
+          q: 'Em Marcos 3, quem é descrito como os parentes de Jesus que tentam tirá-lo da multidão?',
+          options: [
+            'Os fariseus',
+            'Os mestres da lei',
+            'Sua mãe e irmãos',
+            'Os samaritanos',
+          ],
+          correct: 2,
+        },
+        {
+          q: 'O que Jesus faz para acalmar a tempestade em Marcos 4?',
+          options: [
+            'Ora ao Pai',
+            'Ordena ao vento e ao mar que se acalmem',
+            'Chama os discípulos para orar',
+            'Atira uma pedra no mar',
+          ],
+          correct: 1,
+        },
+        {
+          q: 'Em Marcos 11, o que Jesus faz no templo de Jerusalém?',
+          options: [
+            'Expulsa os vendedores e cambistas',
+            'Ensina em parábolas aos líderes religiosos',
+            'Realiza milagres de cura',
+            'Dá uma grande oferta ao templo',
+          ],
+          correct: 0,
+        },
+        {
+          q: 'Em Marcos 7, qual é a crítica de Jesus aos fariseus?',
+          options: [
+            'Eles não sabem orar corretamente',
+            'Eles mantêm tradições humanas em detrimento da palavra de Deus',
+            'Eles não pregam o evangelho',
+            'Eles são hipócritas por não realizar milagres',
+          ],
+          correct: 1,
+        },
+        {
+          q: 'Quem se aproxima de Jesus em Marcos 10 para pedir um milagre de cura para sua cegueira?',
+          options: ['Bartimeu', 'Zacarias', 'Maria Madalena', 'Lázaro'],
+          correct: 0,
+        },
+        {
+          q: 'Na primeira multiplicação dos pães, quantas pessoas foram alimentadas?',
+          options: ['3.000', '4.000', '5.000', '7.000'],
+          correct: 2,
+        },
+      ];
+
+      let currentQuestion = 0;
+
+      function loadQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById('quiz-question').innerText =
+          `${currentQuestion + 1}. ${q.q}`;
+        const optionsDiv = document.getElementById('quiz-options');
+        optionsDiv.innerHTML = '';
+        q.options.forEach((opt, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.innerText = opt;
+          btn.onclick = () => checkAnswer(index);
+          optionsDiv.appendChild(btn);
+        });
+      }
+
+      function checkAnswer(choice) {
+        if (choice === questions[currentQuestion].correct) {
+          showModal('modal-correct');
+          setTimeout(() => {
+            hideModal('modal-correct');
+            currentQuestion++;
+            if (currentQuestion < questions.length) loadQuestion();
+            else alert('Parabéns! Você concluiu o desafio!');
+          }, 1500);
+        } else {
+          showModal('modal-incorrect');
+          setTimeout(() => {
+            hideModal('modal-incorrect');
+            currentQuestion = 0;
+            loadQuestion();
+          }, 2000);
+        }
+      }
+
+      function showModal(id) {
+        document.getElementById(id).style.display = 'flex';
+      }
+      function hideModal(id) {
+        document.getElementById(id).style.display = 'none';
+      }
+
+      // Iniciar Quiz
+      loadQuestion();
+    </script>
+  </body>
+</html>
