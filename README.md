@@ -82,6 +82,55 @@ Criar um ambiente digital simples, acessível e acolhedor para apoiar o estudo b
 - **Design minimalista orientado à experiência do usuário**
 
 ---
+# 🙌 Projeto 3 — Site para Grupo de Jovens  
+### Plataforma que reúne, estudo musical, estudo bíblico e gamefication
+
+**Site publicado:** https://conexaojovem.netlify.app/
+
+## 🎯 Objetivo
+Estimular a juventude local na busca pela leitura diária, criando um ambiente digital moderno, acessível e favorável para despertar o interesse por música, conhecimento bíblico e pela vida espiritual e interação entre os jovens. O projeto reúne conteúdo multimídia e ferramentas de acompanhamento, gamefication que facilitam o aprendizado e fortalecem o engajamento. 
+
+## 🧠 Solução Desenvolvida
+- **Discovery com liderança do grupo dos objetivos**
+- Curto prazo: Ensino e vida espiritual
+- Médio prazo: Estimular participação e interesse pela música
+- Longo prazo: Impacto Social para vida
+
+- **Site para visitação e navegação do conteúdo**.
+- **Design moderno**, priorizando clareza e acessibilidade.
+- **Criação de animação via IA**, criação e transformação do logo do grupo (identidade)
+- **Integração com Google Docs**, permitindo:
+  - Questionários
+  - Consulta de DOCs
+  - Registro de presença
+- Hospedagem paga via Netlify.
+
+## 🧩 Consultoria Técnica
+- Estrutura HTML modular e fácil de manter.
+- Orientação para líderes sobre atualização de conteúdo.
+- Organização de conteúdo para facilitar navegação por temas e semanas.
+
+---
+
+# 🌱 Impacto Social
+
+- Inclusão digital, modernização na liderança de jovens e consolidação de materiais e recursos.
+- Fortalecimento de iniciativas comunitárias por meio de tecnologia acessível.
+- Democratização do uso de IA para comunicação, ensino e presença digital.
+- Criação de modelos replicáveis para novos projetos voluntários.
+
+---
+
+# 🛠️ Tecnologias Utilizadas
+
+- **HTML5 / CSS3**
+- **JavaScript (básico)**
+- **IA para criação de conteúdo multimídia**
+- **Netlify (deploy pago)**
+- **Google DOCs**
+- **Design moderno orientado à experiência do usuário**
+
+---
 
 # 🤝 Propósito
 
